@@ -172,7 +172,26 @@ const Sepet = () => {
         if(addressForm)
             addressForm.click();   
     }
-
+    const [selectedDiv, setSelectedDiv] = React.useState(0);
+    const selectDiv = (index) => {
+        setSelectedDiv(index);
+    }
+    const setActiveDiv = (index) =>{
+        const divElements =document.getElementsByClassName("divArea");
+        if (divElements){
+            for(let i =1;i<=divElements.length;i++){
+                if(i ==index)
+                {
+                    divElements[i-1].classList.add("selectedDivArea");
+                    continue;
+                }
+                divElements[i-1].classList.remove("selectedDivArea")
+            }
+        }
+    }
+    React.useEffect(()=>{
+        setActiveDiv(selectedDiv)
+    },[selectedDiv])
     return (
         <div>
             <div className="z-20  fixed top-0 left-0 right-0 py-8 bg-white flex justify-around   w-full">
@@ -238,7 +257,7 @@ const Sepet = () => {
                                     </div>
                                 </div>
                                 <div className="xl:flex xl:flex-row flex flex-col gap-2 ">
-                                    <div className="bg-custom-card rounded-lg xl:w-1/3 w-full px-4 focus:bg-blue-800 hover:bg-blue-300    ">
+                                    <div id="div1" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e)=> selectDiv(1)}>
                                         <input id="credit" type="radio" class="hidden" value="option1"
                                             className="hidden"
                                             checked={selectedOption === 'option1'}
@@ -251,7 +270,7 @@ const Sepet = () => {
                                             </div>
                                         </label>
                                     </div>
-                                    <div className="bg-custom-card rounded-lg xl:w-1/3 w-full">
+                                    <div id='div2' className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e)=> selectDiv(2)}>
                                         <input id="debit" type="radio" class="hidden" name="paymentMethod" value="debit" />
                                         <label>
                                             <div className="flex gap-2 mt-2 items-center ml-2 text-sm">
@@ -260,7 +279,7 @@ const Sepet = () => {
                                             </div>
                                         </label>
                                     </div>
-                                    <div className="bg-custom-card rounded-lg xl:w-1/3 w-full">
+                                    <div id="div3" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e)=> selectDiv(3)}>
                                         <input id="cash" type="radio" class="hidden" name="paymentMethod" value="cash" />
                                         <label>
                                             <div className="flex gap-2  items-center mt-2 ml-2 text-sm ">
