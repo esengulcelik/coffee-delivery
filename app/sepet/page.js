@@ -8,7 +8,7 @@ import { MdLocationOn } from "react-icons/md";
 import { SlBasketLoaded } from "react-icons/sl";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { CiCreditCard1 } from "react-icons/ci";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { CiBank } from "react-icons/ci"; <CiBank />
 import { CiMoneyBill } from "react-icons/ci"; <CiMoneyBill />
 import { PiCoffeeFill } from "react-icons/pi";
@@ -104,15 +104,14 @@ const initialCoffeeData = [
 const Sepet = () => {
     const [coffeeData, setCoffeeData] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
-
+    const router = useRouter();
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         setCoffeeData(cart);
     }, []);
 
     const handleFormSubmit = (e) => {
-        e.preventDefault();
-        const form = e.currentTarget;
+        const form = document.getElementById("addressForm");
 
         if (!(form instanceof HTMLFormElement)) {
             console.error('Form elementi bulunamadı!');
@@ -121,6 +120,7 @@ const Sepet = () => {
 
         const formData = new FormData(form);
         const address = {
+            cep:formData.get("phone"),
             rua: formData.get('rua'),
             numero: formData.get('numero'),
             bairro: formData.get('bairro'),
@@ -128,18 +128,12 @@ const Sepet = () => {
             uf: formData.get('uf'),
         };
 
-        console.log('Form Data:', address); // Konsola form verilerini yazdırıyoruz
-
-        if (!address.rua || !address.numero || !address.bairro || !address.cidade || !address.uf) {
+        if (!address.rua  || address.rua ==="" || !address.numero  || address.numero ==="" || !address.bairro || address.bairro ==="" || !address.cidade || address.cidade ==="" || !address.uf || address.uf ==="") {
             console.error('Form elemanları eksik!');
             return;
         }
-
+       
         // Verileri URL query string ile Confirm sayfasına yönlendirme
-        router.push({
-            pathname: '/confirm',
-            query: address,
-        });
     };
     const incrementValue = (index) => {
         const newCoffeeData = [...coffeeData];
@@ -173,6 +167,12 @@ const Sepet = () => {
         setSelectedOption(e.target.value);
     };
 
+    const submitForm = () => {
+        const addressForm = document.getElementById("submitForm");
+        if(addressForm)
+            addressForm.click();   
+    }
+
     return (
         <div>
             <div className="z-20  fixed top-0 left-0 right-0 py-8 bg-white flex justify-around   w-full">
@@ -197,8 +197,9 @@ const Sepet = () => {
 
 
             <div>
-                <form onSubmit={handleFormSubmit}>
-                    <div className=" xl:flex xl:flex-row flex flex-col gap-6   justify-center mx-auto max-w-5xl mt-36 ">
+                <div className=" xl:flex xl:flex-row flex flex-col gap-6   justify-center mx-auto max-w-5xl mt-36 ">
+                    <form id="addressForm" action='/confirm' onSubmit={handleFormSubmit}>
+
                         <div className="flex flex-col gap-4 basis-3/5  xl:w-full w-4/5 ">
                             <p className="font-bold">Complete seu pedido</p>
                             <div className="bg-custom-sepet rounded-lg ">
@@ -273,56 +274,55 @@ const Sepet = () => {
 
                             </div>
                         </div>
+                        <button id="submitForm" style={{display:"none"}} type='submit' onClick={handleFormSubmit} />
+                    </form>
 
-                        <div className="bg-custom-sepet  xl:w-full w-4/5  flex basis-2/5 rounded-tr-3xl rounded-bl-3xl px-3  mt-10 ">
-                            <div>
+                    <div className="bg-custom-sepet  xl:w-full w-4/5  flex basis-2/5 rounded-tr-3xl rounded-bl-3xl px-3  mt-10 ">
+                        <div>
 
-                            </div>
-                            <section className="space-y-5 w-full px-7 py-7 ">
-                                {coffeeData.map((coffee, index) => (
-                                    <div className="flex  items-center gap-5">
+                        </div>
+                        <section className="space-y-5 w-full px-7 py-7 ">
+                            {coffeeData.map((coffee, index) => (
+                                <div className="flex  items-center gap-5">
 
-                                        <div className="flex gap-4 items-center">
-                                            <Image src="/images/tradicional.png" width={60} height={60} className="" alt="Coffee Image" />
-                                            <div>
-                                                <p className="whitespace-nowrap">Expresso Tradicional</p>
-                                                <div className="flex gap-2">
-                                                    <div className="bg-custom-card rounded-xl px-2 py-2 flex ">
-                                                        <button onClick={() => decrementValue(index)} className="text-purple-800">-</button>
-                                                        <span>{coffee.count}</span>
-                                                        <button onClick={() => incrementValue(index)} className="text-purple-800">+</button>
-                                                    </div>
-                                                    <button onClick={() => deleteAll(index)} className="bg-custom-card items-center flex text-black text-sm w-full  rounded-lg px-3 py-3">
-                                                        <RiDeleteBin5Line className="text-purple-600" />  REMOVER
-                                                    </button>
+                                    <div className="flex gap-4 items-center">
+                                        <Image src="/images/tradicional.png" width={60} height={60} className="" alt="Coffee Image" />
+                                        <div>
+                                            <p className="whitespace-nowrap">Expresso Tradicional</p>
+                                            <div className="flex gap-2">
+                                                <div className="bg-custom-card rounded-xl px-2 py-2 flex ">
+                                                    <button onClick={() => decrementValue(index)} className="text-purple-800">-</button>
+                                                    <span>{coffee.count}</span>
+                                                    <button onClick={() => incrementValue(index)} className="text-purple-800">+</button>
                                                 </div>
+                                                <button onClick={() => deleteAll(index)} className="bg-custom-card items-center flex text-black text-sm w-full  rounded-lg px-3 py-3">
+                                                    <RiDeleteBin5Line className="text-purple-600" />  REMOVER
+                                                </button>
                                             </div>
                                         </div>
-                                        <p className="font-bold whitespace-nowrap ">{coffee.price * coffee.count}</p>
                                     </div>
-                                ))}
+                                    <p className="font-bold whitespace-nowrap ">{coffee.price * coffee.count}</p>
+                                </div>
+                            ))}
 
-                                <div className="flex justify-between ">
-                                    <p>Total de itens</p>
-                                    <p className="justify-end">R$ {getTotal()}</p>
-                                </div>
-                                <div className="flex justify-between">
-                                    <p>Entrega</p>
-                                    <p>R$ 3,50</p>
-                                </div>
-                                <div className="flex justify-between font-bold text-xl">
-                                    <p>Total</p>
-                                    <p>R$ {getTotal(3.50)} </p>
-                                </div>
-                                <Link href={"/confirm"}>
-                                    <button type='submit' className="bg-orange-300 text-white text-sm w-full  rounded-lg px-3 py-3">
-                                        CONFIRMAR PEDIDO
-                                    </button>
-                                </Link>
-                            </section>
-                        </div>
+                            <div className="flex justify-between ">
+                                <p>Total de itens</p>
+                                <p className="justify-end">R$ {getTotal()}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p>Entrega</p>
+                                <p>R$ 3,50</p>
+                            </div>
+                            <div className="flex justify-between font-bold text-xl">
+                                <p>Total</p>
+                                <p>R$ {getTotal(3.50)} </p>
+                            </div>
+                                <button type='button' onClick={submitForm} className="bg-orange-300 text-white text-sm w-full  rounded-lg px-3 py-3">
+                                    CONFIRMAR PEDIDO
+                                </button>
+                        </section>
                     </div>
-                </form>
+                </div>
 
             </div>
         </div>
