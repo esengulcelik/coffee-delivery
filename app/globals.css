@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/static/Baloo2-Medium.ttf') format('ttf');
+
+  /* Font dosyasının yolunu ve formatını belirtin */
+  font-weight: normal;
+  font-style: normal;
+}
