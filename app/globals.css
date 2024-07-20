@@ -13,3 +13,58 @@
   border: 2px solid #1cb2b2;
   background-color: #fff;
 }
+.hfAsYb {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 6px;
+  border: none;
+  padding: 0px 0.5rem;
+  position: relative;
+  font-size: 0.875rem;
+  cursor: inherit;
+  background: rgb(235, 229, 249);
+  color: rgb(75, 41, 149);
+}
+.bufHds {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 6px;
+  border: none;
+  padding: 0px 0.5rem;
+  position: relative;
+  font-size: 0.875rem;
+  cursor: inherit;
+  background: rgb(241, 233, 201);
+  color: rgb(196, 127, 23);
+}
+.bufHds span {
+  background: rgb(196, 127, 23);
+}
+.bufHds span {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  top: calc(-0.625rem);
+  right: calc(-0.625rem);
+  color: rgb(255, 255, 255);
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}

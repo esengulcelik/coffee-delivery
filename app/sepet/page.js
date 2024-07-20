@@ -1,20 +1,12 @@
 'use client'
-import React from 'react';
 import Image from "next/image";
-import Head from "next/head";
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { CiBank, CiCreditCard1, CiMoneyBill } from "react-icons/ci";
+import { HiOutlineLocationMarker } from "react-icons/hi";
 import { MdLocationOn } from "react-icons/md";
 import { SlBasketLoaded } from "react-icons/sl";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { CiCreditCard1 } from "react-icons/ci";
-import { useRouter } from 'next/navigation';
-import { CiBank } from "react-icons/ci"; <CiBank />
-import { CiMoneyBill } from "react-icons/ci"; <CiMoneyBill />
-import { PiCoffeeFill } from "react-icons/pi";
-import { GoClockFill } from "react-icons/go";
-import { BsBoxSeamFill } from "react-icons/bs";
-import { RiDeleteBin5Line } from "react-icons/ri";
+import Items from './items';
 const initialCoffeeData = [
     {
         name: "Expresso Tradicional",
@@ -104,12 +96,11 @@ const initialCoffeeData = [
 const Sepet = () => {
     const [coffeeData, setCoffeeData] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
-    const router = useRouter();
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         setCoffeeData(cart);
     }, []);
-
+    useEffect(() => { }, [coffeeData])
     const handleFormSubmit = (e) => {
         const form = document.getElementById("addressForm");
 
@@ -120,7 +111,7 @@ const Sepet = () => {
 
         const formData = new FormData(form);
         const address = {
-            cep:formData.get("phone"),
+            cep: formData.get("phone"),
             rua: formData.get('rua'),
             numero: formData.get('numero'),
             bairro: formData.get('bairro'),
@@ -128,11 +119,11 @@ const Sepet = () => {
             uf: formData.get('uf'),
         };
 
-        if (!address.rua  || address.rua ==="" || !address.numero  || address.numero ==="" || !address.bairro || address.bairro ==="" || !address.cidade || address.cidade ==="" || !address.uf || address.uf ==="") {
+        if (!address.rua || address.rua === "" || !address.numero || address.numero === "" || !address.bairro || address.bairro === "" || !address.cidade || address.cidade === "" || !address.uf || address.uf === "") {
             console.error('Form elemanları eksik!');
             return;
         }
-       
+
         // Verileri URL query string ile Confirm sayfasına yönlendirme
     };
     const incrementValue = (index) => {
@@ -158,10 +149,10 @@ const Sepet = () => {
         }
     };
     const deleteAll = (index) => {
-        const newCoffeeData = coffeeData
+        const newCoffeeData = [...coffeeData]
         newCoffeeData.splice(index, 1)
-        localStorage.setItem('cart', JSON.stringify(newCoffeeData));
         setCoffeeData(newCoffeeData);
+        localStorage.setItem('cart', JSON.stringify(newCoffeeData));
     }
     const handleOptionChange = (e) => {
         setSelectedOption(e.target.value);
@@ -169,29 +160,28 @@ const Sepet = () => {
 
     const submitForm = () => {
         const addressForm = document.getElementById("submitForm");
-        if(addressForm)
-            addressForm.click();   
+        if (addressForm)
+            addressForm.click();
     }
     const [selectedDiv, setSelectedDiv] = React.useState(0);
     const selectDiv = (index) => {
         setSelectedDiv(index);
     }
-    const setActiveDiv = (index) =>{
-        const divElements =document.getElementsByClassName("divArea");
-        if (divElements){
-            for(let i =1;i<=divElements.length;i++){
-                if(i ==index)
-                {
-                    divElements[i-1].classList.add("selectedDivArea");
+    const setActiveDiv = (index) => {
+        const divElements = document.getElementsByClassName("divArea");
+        if (divElements) {
+            for (let i = 1; i <= divElements.length; i++) {
+                if (i == index) {
+                    divElements[i - 1].classList.add("selectedDivArea");
                     continue;
                 }
-                divElements[i-1].classList.remove("selectedDivArea")
+                divElements[i - 1].classList.remove("selectedDivArea")
             }
         }
     }
-    React.useEffect(()=>{
+    React.useEffect(() => {
         setActiveDiv(selectedDiv)
-    },[selectedDiv])
+    }, [selectedDiv])
     return (
         <div>
             <div className="z-20  fixed top-0 left-0 right-0 py-8 bg-white flex justify-around   w-full">
@@ -237,7 +227,7 @@ const Sepet = () => {
                                         <input type="text" name="numero" id="numero" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5   " placeholder="numero" required />
                                         <div className=" items-center relative block w-full  ">
                                             <input type="text" name="complemento" id="complemento" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5    " placeholder="complemento" required />
-                                            <span class=" absolute  right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm italic">Opcional</span>
+                                            <span className=" absolute  right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm italic">Opcional</span>
                                         </div>
                                     </div>
                                     <div className="flex gap-6">
@@ -257,9 +247,8 @@ const Sepet = () => {
                                     </div>
                                 </div>
                                 <div className="xl:flex xl:flex-row flex flex-col gap-2 ">
-                                    <div id="div1" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e)=> selectDiv(1)}>
-                                        <input id="credit" type="radio" class="hidden" value="option1"
-                                            className="hidden"
+                                    <div id="div1" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(1)}>
+                                        <input id="credit" type="radio" className="hidden" value="option1"
                                             checked={selectedOption === 'option1'}
                                             onChange={handleOptionChange} name="paymentMethod" />
                                         <label className={`cursor-pointer p-4 border rounded ${selectedOption === 'option1' ? 'bg-green-500 text-white' : 'bg-white'
@@ -270,8 +259,8 @@ const Sepet = () => {
                                             </div>
                                         </label>
                                     </div>
-                                    <div id='div2' className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e)=> selectDiv(2)}>
-                                        <input id="debit" type="radio" class="hidden" name="paymentMethod" value="debit" />
+                                    <div id='div2' className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(2)}>
+                                        <input id="debit" type="radio" className="hidden" name="paymentMethod" value="debit" />
                                         <label>
                                             <div className="flex gap-2 mt-2 items-center ml-2 text-sm">
                                                 <CiBank className="text-purple-700 text-lg" />
@@ -279,8 +268,8 @@ const Sepet = () => {
                                             </div>
                                         </label>
                                     </div>
-                                    <div id="div3" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e)=> selectDiv(3)}>
-                                        <input id="cash" type="radio" class="hidden" name="paymentMethod" value="cash" />
+                                    <div id="div3" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(3)}>
+                                        <input id="cash" type="radio" className="hidden" name="paymentMethod" value="cash" />
                                         <label>
                                             <div className="flex gap-2  items-center mt-2 ml-2 text-sm ">
                                                 <CiMoneyBill className="text-purple-700 focus:bg text-lg" />
@@ -293,35 +282,15 @@ const Sepet = () => {
 
                             </div>
                         </div>
-                        <button id="submitForm" style={{display:"none"}} type='submit' onClick={handleFormSubmit} />
+                        <button id="submitForm" style={{ display: "none" }} type='submit' onClick={handleFormSubmit} />
                     </form>
-
                     <div className="bg-custom-sepet  xl:w-full w-4/5  flex basis-2/5 rounded-tr-3xl rounded-bl-3xl px-3  mt-10 ">
                         <div>
 
                         </div>
                         <section className="space-y-5 w-full px-7 py-7 ">
                             {coffeeData.map((coffee, index) => (
-                                <div className="flex  items-center gap-5">
-
-                                    <div className="flex gap-4 items-center">
-                                        <Image src="/images/tradicional.png" width={60} height={60} className="" alt="Coffee Image" />
-                                        <div>
-                                            <p className="whitespace-nowrap">Expresso Tradicional</p>
-                                            <div className="flex gap-2">
-                                                <div className="bg-custom-card rounded-xl px-2 py-2 flex ">
-                                                    <button onClick={() => decrementValue(index)} className="text-purple-800">-</button>
-                                                    <span>{coffee.count}</span>
-                                                    <button onClick={() => incrementValue(index)} className="text-purple-800">+</button>
-                                                </div>
-                                                <button onClick={() => deleteAll(index)} className="bg-custom-card items-center flex text-black text-sm w-full  rounded-lg px-3 py-3">
-                                                    <RiDeleteBin5Line className="text-purple-600" />  REMOVER
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p className="font-bold whitespace-nowrap ">{coffee.price * coffee.count}</p>
-                                </div>
+                                <Items incrementValue={incrementValue} decrementValue={decrementValue} coffee={coffee} deleteAll={deleteAll} index={index} />
                             ))}
 
                             <div className="flex justify-between ">
@@ -336,13 +305,13 @@ const Sepet = () => {
                                 <p>Total</p>
                                 <p>R$ {getTotal(3.50)} </p>
                             </div>
-                                <button type='button' onClick={submitForm} className="bg-orange-300 text-white text-sm w-full  rounded-lg px-3 py-3">
-                                    CONFIRMAR PEDIDO
-                                </button>
+                            <button type='button' onClick={submitForm} className="bg-orange-300 text-white text-sm w-full  rounded-lg px-3 py-3">
+                                CONFIRMAR PEDIDO
+                            </button>
                         </section>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     )

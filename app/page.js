@@ -137,13 +137,15 @@ export default function Home() {
                 </Link>
                 <div className="flex gap-2">
                     <div className="bg-custom-purple  rounded-lg px-2  text-purple-700  ">
-                        <button className="text-sm flex  py-1 mt-1">
+                        <button className="text-sm flex  py-1 mt-1 sc-dkzDqf hfAsYb">
                             <MdLocationOn className="text-xl" />
                             Fortaleza, CE
                         </button>
                     </div>
                     <Link href={"/sepet"} className="bg-custom-beige text-orange-800 px-3 py-2 rounded-lg">
+                        <button className='sc-dkzDqf bufHds'><span>{cartCount}</span>
                         <SlBasketLoaded className="w-5 h-5" />
+                        </button>
                     </Link>
                 </div>
             </div>
