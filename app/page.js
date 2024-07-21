@@ -152,7 +152,7 @@ export default function Home() {
       <div className="  mt-16  bg-gradient-to-r from-yellow-50 via-purple-50 to-yellow-50 ">
         <div className=" container mx-auto max-w-6xl xl:flex xl:flex-row flex flex-col space-x-7 py-20 ">
           <div className="basis-1/2 space-y-24 ">
-            <div className="space-y-8 ">
+            <div className="space-y-8 xl:ml-0 ml-2 ">
               <h1 className="font-bold xl:text-5xl text-4xl leading-normal ">Encontre o café perfeito para qualquer hora do dia</h1>
               <h3 className="xl:text-2xl text-sm">Com o Coffe Delivery você recebe seu café onde estiver, a qualquer hora</h3>
             </div>

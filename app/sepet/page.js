@@ -96,6 +96,7 @@ const initialCoffeeData = [
 const Sepet = () => {
     const [coffeeData, setCoffeeData] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('');
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         setCoffeeData(cart);
@@ -154,9 +155,7 @@ const Sepet = () => {
         setCoffeeData(newCoffeeData);
         localStorage.setItem('cart', JSON.stringify(newCoffeeData));
     }
-    const handleOptionChange = (e) => {
-        setSelectedOption(e.target.value);
-    };
+ 
 
     const submitForm = () => {
         const addressForm = document.getElementById("submitForm");
@@ -164,9 +163,13 @@ const Sepet = () => {
             addressForm.click();
     }
     const [selectedDiv, setSelectedDiv] = React.useState(0);
-    const selectDiv = (index) => {
+    const selectDiv = (index, method) => {
         setSelectedDiv(index);
-    }
+        setPaymentMethod(method);
+        localStorage.setItem('selectedPaymentMethod', method);
+        console.log(`Seçilen ödeme yöntemi: ${method}`);
+    };
+  
     const setActiveDiv = (index) => {
         const divElements = document.getElementsByClassName("divArea");
         if (divElements) {
@@ -182,6 +185,7 @@ const Sepet = () => {
     React.useEffect(() => {
         setActiveDiv(selectedDiv)
     }, [selectedDiv])
+    
     return (
         <div>
             <div className="z-20  fixed top-0 left-0 right-0 py-8 bg-white flex justify-around   w-full">
@@ -206,10 +210,10 @@ const Sepet = () => {
 
 
             <div>
-                <div className=" xl:flex xl:flex-row flex flex-col gap-6   justify-center mx-auto max-w-5xl mt-36 ">
+                <div className="xl:flex xl:flex-row flex flex-col gap-6 xl:px-0 px-6 justify-center mx-auto max-w-5xl mt-36 mb-20">
                     <form id="addressForm" action='/confirm' onSubmit={handleFormSubmit}>
 
-                        <div className="flex flex-col gap-4 basis-3/5  xl:w-full w-4/5 ">
+                        <div className="flex flex-col gap-4 basis-3/5  xl:w-full w-full">
                             <p className="font-bold">Complete seu pedido</p>
                             <div className="bg-custom-sepet rounded-lg ">
 
@@ -223,14 +227,14 @@ const Sepet = () => {
                                 <div className="mb-5 max-w-lg  mx-auto ml-5 space-y-3  py-6 px-4">
                                     <input type="text" name='phone' id="phone" className="bg-custom-form border w-40 border-gray-200 text-gray-500 text-sm rounded-lg  block p-2.5   " placeholder="CEP" required />
                                     <input type="text" name="rua" id="rua" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5   " placeholder="rua" required />
-                                    <div className="flex gap-2">
+                                    <div className="flex xl:flex-row flex-col gap-2">
                                         <input type="text" name="numero" id="numero" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5   " placeholder="numero" required />
                                         <div className=" items-center relative block w-full  ">
                                             <input type="text" name="complemento" id="complemento" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5    " placeholder="complemento" required />
                                             <span className=" absolute  right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm italic">Opcional</span>
                                         </div>
                                     </div>
-                                    <div className="flex gap-6">
+                                    <div className="flex gap-6 xl:flex-row flex-col">
                                         <input type="text" name="bairro" id="bairro" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5   " placeholder="bairro" required />
                                         <input type="text" name="cidade" id="cidade" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5   " placeholder="cidade" required />
                                         <input type="text" name="uf" id="uf" className="bg-custom-form border border-gray-200 text-gray-500 text-sm rounded-lg  block w-full p-2.5   " placeholder="uf" required />
@@ -247,31 +251,29 @@ const Sepet = () => {
                                     </div>
                                 </div>
                                 <div className="xl:flex xl:flex-row flex flex-col gap-2 ">
-                                    <div id="div1" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(1)}>
+                                    <div id="div1" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(1,'Cartão de Crédito')}>
                                         <input id="credit" type="radio" className="hidden" value="option1"
-                                            checked={selectedOption === 'option1'}
-                                            onChange={handleOptionChange} name="paymentMethod" />
-                                        <label className={`cursor-pointer p-4 border rounded ${selectedOption === 'option1' ? 'bg-green-500 text-white' : 'bg-white'
-                                            }`}>
-                                            <div className="flex gap-2 items-center text-sm ">
+                                           name="paymentMethod" />
+                                        <label >
+                                            <div className="flex gap-2  xl:py-0 py-3 ml-2  px-2 mt-1 items-center text-sm ">
                                                 <CiCreditCard1 className="text-purple-700 text-lg" />
                                                 Cartão de Cŕedito
                                             </div>
                                         </label>
                                     </div>
-                                    <div id='div2' className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(2)}>
+                                    <div id='div2' className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(2,'Cartão de Débito')}>
                                         <input id="debit" type="radio" className="hidden" name="paymentMethod" value="debit" />
                                         <label>
-                                            <div className="flex gap-2 mt-2 items-center ml-2 text-sm">
+                                            <div className="flex gap-2 px-2 xl:py-0 py-3 mt-1 items-center ml-2 text-sm">
                                                 <CiBank className="text-purple-700 text-lg" />
                                                 Cartão de Débito
                                             </div>
                                         </label>
                                     </div>
-                                    <div id="div3" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(3)}>
+                                    <div id="div3" className="divArea bg-custom-card rounded-lg xl:w-1/3 w-full" onClick={(e) => selectDiv(3,'Dinheiro')}>
                                         <input id="cash" type="radio" className="hidden" name="paymentMethod" value="cash" />
                                         <label>
-                                            <div className="flex gap-2  items-center mt-2 ml-2 text-sm ">
+                                            <div className="flex gap-2 px-2  xl:py-0 py-3   items-center mt-2 ml-2 text-sm ">
                                                 <CiMoneyBill className="text-purple-700 focus:bg text-lg" />
                                                 Dinheiro
                                             </div>
@@ -284,7 +286,7 @@ const Sepet = () => {
                         </div>
                         <button id="submitForm" style={{ display: "none" }} type='submit' onClick={handleFormSubmit} />
                     </form>
-                    <div className="bg-custom-sepet  xl:w-full w-4/5  flex basis-2/5 rounded-tr-3xl rounded-bl-3xl px-3  mt-10 ">
+                    <div className="bg-custom-sepet  xl:w-full w-full  flex basis-2/5 rounded-tr-3xl rounded-bl-3xl px-3  mt-10 ">
                         <div>
 
                         </div>

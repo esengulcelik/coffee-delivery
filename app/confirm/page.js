@@ -22,6 +22,7 @@ import { HiCurrencyDollar } from "react-icons/hi2";
 
 export default function confirm() {
     const searchParams = useSearchParams();
+    const [paymentMethod, setPaymentMethod] = useState('');
 
     
     // Query string'inden verileri alıyoruz
@@ -30,7 +31,13 @@ export default function confirm() {
     const bairro = searchParams.get('bairro') || 'Não disponível';
     const cidade = searchParams.get('cidade') || 'Não disponível';
     const uf = searchParams.get('uf') || 'Não disponível';
-console.log(rua)
+    useEffect(() => {
+        const selectedPaymentMethod = localStorage.getItem('selectedPaymentMethod');
+        if (selectedPaymentMethod) {
+            setPaymentMethod(selectedPaymentMethod);
+        }
+    }, []);
+  
     return (
         <div>
             <div className="z-20  fixed top-0 left-0 right-0 py-8 bg-white flex justify-around   w-full">
@@ -66,30 +73,30 @@ console.log(rua)
                     <div className='flex flex-col xl:w-full w-4/5  basis-1/2 h-full  rounded-tr-3xl rounded-bl-3xl bg-gradient-to-r from-yellow-500 via-pink-500 to-purple-500 p-1'>
                         <div className='gap-6 flex flex-col  bg-white rounded-tr-3xl rounded-bl-3xl px-8 py-8'>
                             <div className='flex gap-3'>
-                                <div className='px-2 py-2 rounded-full text-white bg-purple-400'>
+                                <div className='px-2 py-2 mt-2 rounded-full text-white bg-purple-400'>
                                     <MdLocationOn className='w-5 h-5  ' />
                                 </div>
                                 <div className='flex flex-col '>
                                 <p>Entrega em  {rua}, {numero}</p>
-                                <p></p>
+                                <p>{bairro}-{uf}, {cidade}</p>
                                 </div>
                             </div>
                             <div className='flex gap-3'>
-                                <div className="px-2 py-2 rounded-full bg-orange-400 text-white">
+                                <div className="px-2 py-2 mt-2 rounded-full bg-orange-400 text-white">
                                     <GoClockFill className="w-5 h-5" />
                                 </div>
                                 <div className='flex flex-col'>
                                     <p>Previsão de entrega</p>
-                                    <p>20 min - 30 min</p>
+                                    <p className='font-bold'>20 min - 30 min</p>
                                 </div>
                             </div>
                             <div className='flex gap-3'>
-                                <div className='px-3 py-3 w-10 rounded-full text-4xl text-white bg-orange-700'>
+                                <div className='px-2 py-2 mt-2 rounded-full text-4xl text-white bg-orange-700'>
                                     <BiDollar className='items-center w-5 h-5' />
                                 </div>
                                 <div className='flex flex-col'>
                                     <p>Pagamento na entrega</p>
-                                    <p>Cartão de Débito</p>
+                                    <p>{paymentMethod}</p>
                                 </div>
                             </div>
                         </div>

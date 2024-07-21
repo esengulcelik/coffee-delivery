@@ -10,8 +10,8 @@
   font-style: normal;
 }
 .selectedDivArea {
-  border: 2px solid #1cb2b2;
-  background-color: #fff;
+  border: 2px solid #801cb2;
+  background-color: hsl(291, 20%, 79%);
 }
 .hfAsYb {
   display: flex;
